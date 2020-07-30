@@ -2,8 +2,8 @@
 
 #include <Arduino.h>
 
-// When defined, will send raw data over serial.
-#define RAW_DATA_OUTPUT
+// When defined, will send SPC data as hexadecimal over serial.
+#define HEX_DATA_OUTPUT
 
 // When defined, will convert raw data to human readable string
 // and send over serial.
@@ -73,7 +73,7 @@ void loop() {
         spcdata[i] = k;
     }
 
-#ifdef RAW_DATA_OUTPUT
+#ifdef HEX_DATA_OUTPUT
     for( i = 0; i < 13; i++ ) {
         Serial.print(spcdata[i],HEX);
     }
@@ -81,7 +81,7 @@ void loop() {
     // Need a separator if we're printing human readable as well
     Serial.print(" ");
 #endif // HUMAN_READABLE_OUTPUT
-#endif //RAW_DATA_OUTPUT
+#endif //HEX_DATA_OUTPUT
 
 #ifdef HUMAN_READABLE_OUTPUT
     // Combine measurement digits into a number
