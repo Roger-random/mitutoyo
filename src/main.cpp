@@ -2,6 +2,13 @@
 
 #include <Arduino.h>
 
+// When defined, will send raw data over serial.
+#define RAW_DATA_OUTPUT
+
+// When defined, will convert raw data to human readable string
+// and send over serial.
+// #define HUMAN_READABLE_OUTPUT
+
 int req = 5; //Arduino pin for REQ line, drives transistor to ground SPC port pin 5 (~REQ)
 int dat = 2; //Arduino pin for Data line, connects directly to SPC port pin 2 (DATA)
 int clk = 3; //Arduino pin for Clock line, connects directly to SPC port pin 3 (~CLK)
@@ -27,8 +34,11 @@ int k = 0;
 // 12   Unit. Zero is mm. Nonzero (b1000 is 1?) is inch
 
 byte spcdata[13]; // The raw data sent by instrument
+
+#ifdef HUMAN_READABLE_OUTPUT
 float value;      // The value calculated from raw data
 int decimal;      // Number of digits that are after decimal point
+#endif
 
 void setup() {
     Serial.begin(9600);
@@ -63,6 +73,17 @@ void loop() {
         spcdata[i] = k;
     }
 
+#ifdef RAW_DATA_OUTPUT
+    for( i = 0; i < 13; i++ ) {
+        Serial.print(spcdata[i],HEX);
+    }
+#ifdef HUMAN_READABLE_OUTPUT
+    // Need a separator if we're printing human readable as well
+    Serial.print(" ");
+#endif // HUMAN_READABLE_OUTPUT
+#endif //RAW_DATA_OUTPUT
+
+#ifdef HUMAN_READABLE_OUTPUT
     // Combine measurement digits into a number
     value = 0;
     for( i = 5; i <= 10; i++) {
@@ -85,8 +106,11 @@ void loop() {
 
     // Append units for value
     if (spcdata[12] == 0) {
-        Serial.println(" mm");
+        Serial.print(" mm");
     } else {
-        Serial.println(" in");
+        Serial.print(" in");
     }
+#endif // HUMAN_READABLE_OUTPUT
+
+    Serial.println();
 }
