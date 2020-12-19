@@ -22,3 +22,6 @@ of a
 * [This Instructables project](https://www.instructables.com/id/Interfacing-a-Digital-Micrometer-to-a-Microcontrol/)
 which uses a Mitutoyo micrometer instead of plunge-style indicator like the
 543-783B, and output to VGA which is not needed for this project.
+
+Project schematic:
+![Mitutoyo SPC Arduino serial schematic](schematic.png)
